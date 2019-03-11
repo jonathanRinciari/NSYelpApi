@@ -1,14 +1,17 @@
 import { Observable } from 'tns-core-modules/data/observable';
 import { NSYelpApi } from 'nativescript-NSYelpApi';
+import { YOUR_API_KEY } from '~/enviornment';
 
 export class HelloWorldModel extends Observable {
   public message: string;
-  private nSYelpApi: NSYelpApi;
+  private api: NSYelpApi;
 
   constructor() {
     super();
 
-    this.nSYelpApi = new NSYelpApi();
-    this.message = this.nSYelpApi.message;
+    this.api = new NSYelpApi(YOUR_API_KEY);
+    this.api.businessSearchWithId('23425')
+      .then((t) => console.log(t))
+      .catch(err => console.error(err));
   }
 }
