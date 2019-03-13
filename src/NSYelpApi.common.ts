@@ -1,6 +1,6 @@
 import { Observable } from 'tns-core-modules/data/observable';
 import { ios as iosUtils } from "tns-core-modules/utils/utils";
-import { ParsedYLPCategories } from './typings/NSYelpApi';
+import { ParsedYLPCategories, Reviews, Review, Business, Categories, Location, Coordinate } from './typings/NSYelpApi';
 
 
 export interface YLPReviewParsed {
@@ -10,8 +10,9 @@ export interface YLPReviewParsed {
   user: YLPUser;
 }
 export class Common extends Observable {
-  public parseBusiness (business: YLPBusiness) {
+  public parseBusiness (business: YLPBusiness): Business {
     return {
+      id: business.identifier,
       name: business.name,
       closed: business.closed,
       website: business.URL.absoluteString,
@@ -24,74 +25,184 @@ export class Common extends Observable {
     };
   }
 
-  public parseCategories(categories: NSArray<YLPCategory>): ParsedYLPCategories[] {
+  public parseCategories(categories: NSArray<YLPCategory>): Categories[] {
     const convCategories: any[] = iosUtils.collections.nsArrayToJSArray(categories);
-    const categoryResults: ParsedYLPCategories[] = convCategories.map((category: YLPCategory) => this.parseYLPCategories(category));
+    const categoryResults: Categories[] = convCategories.map((category: YLPCategory) => this.parseYLPCategories(category));
     return categoryResults;
   }
 
-  public parseYLPCategories(category: YLPCategory): ParsedYLPCategories {
+  public parseYLPCategories(category: YLPCategory): Categories {
     return {
       alias: category.alias,
       name: category.name
     };
   }
 
-  public parseYelpLocation(location: YLPLocation) {
+  public parseYelpLocation(location: YLPLocation): Location {
     return {
-        address: location.address,
+        address: iosUtils.collections.nsArrayToJSArray(location.address)[0],
         city: location.city,
-        coordinate: this.parseCoordinates(location.coordinate),
+        coordinates: this.parseCoordinates(location.coordinate),
         countryCode: location.countryCode,
         postalCode: location.postalCode,
         stateCode: location.stateCode
       };
   }
 
-  public parseCoordinates(coordinates: YLPCoordinate) {
+  public parseCoordinates(coordinates: YLPCoordinate): Coordinate {
     return {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
     };
   }
 
-  public parseReviews(reviews: YLPBusinessReviews): {reviews: YLPReviewParsed[], total: number} {
+  public parseReviews(reviews: YLPBusinessReviews): Reviews {
     return {
       reviews: iosUtils.collections.nsArrayToJSArray(reviews.reviews).map(((review: any) => this.parseReview(review))),
       total: reviews.total
     };
   }
 
-  public parseReview(review: YLPReview): YLPReviewParsed {
+  public parseReview(review: YLPReview): Review {
     return {
       message: review.excerpt,
       rating: review.rating,
-      timeCreate: review.timeCreated,
-      user: review.user
+      timeCreate: review.timeCreated.toISOString(),
+      user: review.user.name
     };
   }
 
   public formatSearchQuery(location: string | {latitude: number, longitude: number}, category?: string[], deals?: boolean, limit?: number, offset?: number, radius?: number, sort?: YLPSortType, searchTerm?: string): YLPQuery {
-    let query: YLPQuery;
+    let query: any = {};
 
     if (location) {
       if (location.hasOwnProperty('latitude')) {
         const coordinates = location as {latitude: number, longitude: number};
         let queryLocation = new YLPCoordinate(coordinates);
-        query = new YLPQuery({coordinate: queryLocation});
+        query['coordinate'] = queryLocation;
       } else {
-        query = new YLPQuery({location: location as string});
+        query['location'] = location;
       }
-        query.categoryFilter = iosUtils.collections.jsArrayToNSArray(category);
-        query.dealsFilter = deals;
-        query.limit = limit;
-        query.offset = offset;
-        query.radiusFilter = radius;
-        query.sort = sort;
-        query.term = searchTerm;
-      return query;
+
+      if (category) {
+        query['categoryFilter'] = iosUtils.collections.jsArrayToNSArray(category);
+      }
+      if (deals) {
+        query['dealsFilter'] = deals;
+      }
+
+      if (limit) {
+        query['limit'] = limit;
+      }
+      if (offset) {
+        query['offset'] = offset;
+        console.log(query);
+      }
+      if (radius) {
+        console.log(query);
+        query['radiusFilter'] = radius;
+      }
+      console.log(query);
+      if (sort) {
+        query['sort'] = sort;
+        console.log(query);
+      }
+      console.log(query);
+      if (searchTerm) {
+        query['term'] = searchTerm;
+      }
+      console.log(query);
+      return new YLPQuery(query);
     } else {
       return query;
     }
   }
+
+
+  public parseAndroidReviews(
+    reviews: java.util.ArrayList<com.yelp.fusion.client.models.Review>,
+    total: number
+  ): Reviews {
+    const data: Reviews = {
+      total: total,
+      reviews: []
+    };
+
+    for (let i = 0; i < reviews.size(); i++) {
+      const review: com.yelp.fusion.client.models.Review = reviews.get(i);
+      const reviewData: Review = {
+        message: review.getText(),
+        rating: review.getRating(),
+        timeCreate: review.getTimeCreated(),
+        user: review.getUser().getName()
+      };
+      data.reviews.push(reviewData);
+    }
+    return data;
+  }
+
+  public parseAndroidBusinesses(
+    businesses: java.util.ArrayList<com.yelp.fusion.client.models.Business>
+  ): Business[] {
+    let results = [];
+    for (let i = 0; i < businesses.size(); i++) {
+      results.push(this.parseAndroidBusiness(businesses.get(i)));
+    }
+    return results;
+  }
+
+  public parseAndroidBusiness(
+    business: com.yelp.fusion.client.models.Business
+  ): Business {
+    return {
+      id: business.getId(),
+      name: business.getName(),
+      closed: business.getIsClosed(),
+      website: business.getUrl(),
+      categories: this.parseAndroidCategory(business.getCategories()),
+      location: this.parseLocation(
+        business.getLocation(),
+        business.getCoordinates()
+      ),
+      rating: business.getRating(),
+      imageUrl: business.getImageUrl(),
+      reviewCount: business.getReviewCount(),
+      phone: business.getPhone()
+    };
+  }
+
+  public parseAndroidCategory(
+    categories: java.util.ArrayList<com.yelp.fusion.client.models.Category>
+  ): Categories[] {
+    const data = [];
+    for (let i = 0; i < categories.size(); i++) {
+      const category: com.yelp.fusion.client.models.Category = categories.get(
+        i
+      );
+      const result = {
+        alias: category.getAlias(),
+        name: category.getTitle()
+      };
+      data.push(result);
+    }
+    return data;
+  }
+
+  public parseLocation(
+    location: com.yelp.fusion.client.models.Location,
+    coordinates: com.yelp.fusion.client.models.Coordinates
+  ): Location {
+    return {
+      address: location.getAddress1(),
+      city: location.getCity(),
+      coordinates: {
+        latitude: coordinates.getLatitude(),
+        longitude: coordinates.getLongitude()
+      },
+      countryCode: location.getCountry(),
+      postalCode: location.getZipCode(),
+      stateCode: location.getState()
+    };
+  }
+
 }

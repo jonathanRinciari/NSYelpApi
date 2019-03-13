@@ -1,12 +1,17 @@
 var NSYelpApi = require("nativescript-NSYelpApi").NSYelpApi;
-var nSYelpApi = new NSYelpApi();
+let YOUR_API_KEY = require('../enviornment.js')
 
 describe("greet function", function() {
+    let api;
+    beforeEach(() => {
+        api = new NSYelpApi(YOUR_API_KEY);
+    })
     it("exists", function() {
-        expect(nSYelpApi.greet).toBeDefined();
+        expect(api).toBeDefined();
     });
 
-    it("returns a string", function() {
-        expect(nSYelpApi.greet()).toEqual("Hello, NS");
-    });
+    // it('Should get a business by id', () => {
+        
+    // })
+
 });

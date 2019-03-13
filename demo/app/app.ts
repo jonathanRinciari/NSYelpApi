@@ -6,6 +6,21 @@ purpose of the file is to pass control to the app’s first module.
 
 import * as app from "tns-core-modules/application";
 
+if (app.android) {
+  app.android.on(
+    app.AndroidApplication.activityCreatedEvent,
+    function(args: app.AndroidActivityBundleEventData) {
+      console.log('test');
+      let policy = new android.os.StrictMode.ThreadPolicy.Builder()
+        .permitAll()
+        .build();
+      android.os.StrictMode.setThreadPolicy(policy);
+    }
+  );
+}
+
+
+
 app.run({ moduleName: "app-root" });
 
 /*

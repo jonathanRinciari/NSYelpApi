@@ -1,5 +1,6 @@
 import { Common } from './NSYelpApi.common';
 import { ios as iosUtils } from 'tns-core-modules/utils/utils';
+import { Business, Reviews } from './typings/NSYelpApi';
 export class NSYelpApi extends Common {
   private _client: YLPClient;
   constructor(apiKey: string) {
@@ -7,7 +8,7 @@ export class NSYelpApi extends Common {
     this._client = new YLPClient({APIKey: apiKey});
   }
 
-  public businessSearchWithNumber(phone: string) {
+  public businessSearchWithNumber(phone: string): Promise<Business | {}> {
     return new Promise((resolve, reject) => {
       this._client.businessWithPhoneNumberCompletionHandler(phone, (search: YLPSearch, err: NSError) => {
         if (err) reject(err);
@@ -21,7 +22,7 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public businessSearchWithId(id: string) {
+  public businessSearchWithId(id: string): Promise<Business | {}> {
     return new Promise((resolve, reject) => {
       this._client.businessWithIdCompletionHandler(id, (business: YLPBusiness, err: NSError) => {
         if (err) reject(err);
@@ -34,7 +35,7 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public businessReviewsWithId(id: string) {
+  public businessReviewsWithId(id: string): Promise<Reviews | []> {
     return new Promise((resolve, reject) => {
       this._client.reviewsForBusinessWithIdCompletionHandler(id, (reviews: YLPBusinessReviews, err: NSError) => {
         if (err) reject(err);
@@ -48,7 +49,7 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public searchWithCoordinates(coordinates: {latitude: number, longitude: number}) {
+  public searchWithCoordinates(coordinates: {latitude: number, longitude: number}): Promise<Business[] | []> {
     return new Promise((resolve, reject) => {
       const ylpCoordinates: YLPCoordinate = new YLPCoordinate(coordinates);
       this._client.searchWithCoordinateCompletionHandler(ylpCoordinates, (search: YLPSearch , err: NSError) => {
@@ -64,7 +65,7 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public searchWithLocation(location: string) {
+  public searchWithLocation(location: string): Promise<Business[] | []> {
     return new Promise((resolve, reject) => {
       this._client.searchWithLocationCompletionHandler(location, (search: YLPSearch, err) => {
         if (err) reject(err);
@@ -79,7 +80,7 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public searchWithLocationTermLimitOffsetSort(location: string, term: string, limit: number, offset: number, sort: YLPSortType) {
+  public searchWithLocationTermLimitOffsetSort(location: string, term: string, limit: number, offset: number, sort: YLPSortType): Promise<Business[] | []> {
     return new Promise((resolve, reject) => {
       this._client.searchWithLocationTermLimitOffsetSortCompletionHandler(location, term, limit, offset, sort, (search: YLPSearch, err: NSError) => {
         if (err) reject(err);
@@ -94,7 +95,7 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public businessReviewsWithIdAndLocation(id: string, location: string) {
+  public businessReviewsWithIdAndLocation(id: string, location: string): Promise<Reviews | []> {
     return new Promise((resolve, reject) => {
       this._client.reviewsForBusinessWithIdLocaleCompletionHandler(id, location, (reviews: YLPBusinessReviews, err: NSError) => {
         if (err) reject(err);
@@ -108,7 +109,7 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public searchWithCoordinateLimitOffsetSort(coordinates: {latitude: number, longitude: number}, term: string, limit: number, offset: number, sort: YLPSortType) {
+  public searchWithCoordinateLimitOffsetSort(coordinates: {latitude: number, longitude: number}, term: string, limit: number, offset: number, sort: YLPSortType): Promise<Business[] | []> {
     return new Promise((resolve, reject) => {
       const ylpCoordinates: YLPCoordinate = new YLPCoordinate(coordinates);
       this._client.searchWithCoordinateTermLimitOffsetSortCompletionHandler(ylpCoordinates, term, limit, offset, sort, (search: YLPSearch, err: NSError) => {
@@ -124,7 +125,7 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public searchWithQuery(location: string | {latitude: number, longitude: number}, category?: string[], deals?: boolean, limit?: number, offset?: number, radius?: number, sort?: YLPSortType, searchTerm?: string) {
+  public searchWithQuery(location: string | {latitude: number, longitude: number}, category?: string[], deals?: boolean, limit?: number, offset?: number, radius?: number, sort?: YLPSortType, searchTerm?: string): Promise<Business[] | []> {
     return new Promise((resolve, reject) => {
       let query: YLPQuery = this.formatSearchQuery(location, category, deals, limit, offset, radius, sort, searchTerm);
       this._client.searchWithQueryCompletionHandler(query, (search: YLPSearch, err: NSError) => {
