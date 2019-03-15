@@ -73,19 +73,16 @@ export class Common extends Observable {
   }
 
   public formatSearchQuery(location: string | {latitude: number, longitude: number}, category?: string[], deals?: boolean, limit?: number, offset?: number, radius?: number, sort?: YLPSortType, searchTerm?: string): YLPQuery {
-    let query: any = {};
-
-    if (location) {
-      if (location.hasOwnProperty('latitude')) {
-        const coordinates = location as {latitude: number, longitude: number};
-        let queryLocation = new YLPCoordinate(coordinates);
-        query['coordinate'] = queryLocation;
-      } else {
-        query['location'] = location;
-      }
-
+    let query: YLPQuery;
+    if (location.hasOwnProperty('latitude')) {
+      const coordinates = location as {latitude: number, longitude: number};
+      let queryLocation = new YLPCoordinate(coordinates);
+      query = new YLPQuery({coordinate: queryLocation});
+    } else {
+      query = new YLPQuery({location: location as string});
+    }
       if (category) {
-        query['categoryFilter'] = iosUtils.collections.jsArrayToNSArray(category);
+        query.categoryFilter = iosUtils.collections.jsArrayToNSArray(category);
       }
       if (deals) {
         query['dealsFilter'] = deals;
@@ -96,26 +93,21 @@ export class Common extends Observable {
       }
       if (offset) {
         query['offset'] = offset;
-        console.log(query);
+
       }
       if (radius) {
-        console.log(query);
         query['radiusFilter'] = radius;
       }
-      console.log(query);
       if (sort) {
         query['sort'] = sort;
-        console.log(query);
+
       }
-      console.log(query);
       if (searchTerm) {
         query['term'] = searchTerm;
       }
-      console.log(query);
-      return new YLPQuery(query);
-    } else {
+
+      console.log(query.radiusFilter);
       return query;
-    }
   }
 
 

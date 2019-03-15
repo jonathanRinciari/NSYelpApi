@@ -1,8 +1,5 @@
 /// <reference path="./node_modules/tns-platform-declarations/android.d.ts" />
-import * as application from "tns-core-modules/application";
-import * as util from "tns-core-modules/utils/utils";
 import { Common } from "./NSYelpApi.common";
-import { device } from "tns-core-modules/platform/platform";
 import { Business, Location, Categories, Reviews, Review } from './typings/NSYelpApi';
 
 export class NSYelpApi extends Common {
@@ -102,11 +99,8 @@ export class NSYelpApi extends Common {
     });
   }
 
-  public businessReviewsWithIdAndLocation(id: string, location: string): Promise<Reviews> {
+  public businessReviewsWithIdAndLocale(id: string): Promise<Reviews> {
     return new Promise((resolve, reject) => {
-      let params = new java.util.HashMap();
-      params.put("id", id);
-      params.put("location", location);
       try {
         const search = this._client.getBusinessReviews(
           id,

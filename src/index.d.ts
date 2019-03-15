@@ -12,7 +12,7 @@ export declare class NSYelpApi extends Common {
     }): Promise<Business[] | []>;
     searchWithLocation(location: string): Promise<Business[] | []>;
     searchWithLocationTermLimitOffsetSort(location: string, term: string, limit: number, offset: number, sort: YLPSortType): Promise<Business[] | []>;
-    businessReviewsWithIdAndLocation(id: string, location: string): Promise<Reviews | {}>;
+    businessReviewsWithIdAndLocale(id: string): Promise<Reviews | {}>;
     searchWithCoordinateLimitOffsetSort(coordinates: {
         latitude: number;
         longitude: number;
