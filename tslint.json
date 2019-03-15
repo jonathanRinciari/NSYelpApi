@@ -23,12 +23,6 @@
             false,
             "double"
         ],
-        "linterOptions": {
-            "exclude": [
-                "bin",
-                "./src/typings"
-            ]
-        },
         "semicolon": [
             true,
             "always"
@@ -58,6 +52,12 @@
             "check-operator",
             "check-separator",
             "check-type"
+        ]
+    },
+    "linterOptions": {
+        "exclude": [
+            "**/typings/**",
+            "**/platforms/**"
         ]
     }
 }

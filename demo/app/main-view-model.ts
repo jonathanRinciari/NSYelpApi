@@ -18,6 +18,6 @@ export class HelloWorldModel extends Observable {
     const coordinates = {latitude: 41.313822, longitude: -72.91276};
     this.api.searchWithQuery(coordinates, null, false, 50, 9, null, 'best_match', 'pizza')
       .then((a) => console.log(a, 't'))
-      .catch(err => console.log(err, 'a')); 
+      .catch(err => console.log(err, 'a'));
   }
 }
