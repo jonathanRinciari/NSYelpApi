@@ -23,6 +23,12 @@
             false,
             "double"
         ],
+        "linterOptions": {
+            "exclude": [
+                "bin",
+                "./src/typings"
+            ]
+        },
         "semicolon": [
             true,
             "always"

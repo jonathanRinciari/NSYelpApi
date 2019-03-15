@@ -15,10 +15,9 @@ export class HelloWorldModel extends Observable {
     //   .then((t) => console.log(t))
     //   .catch(err => console.error(err));
 
-    this.api.searchWithQuery('New York City')
-      .then((a: Business[]) => {
-        console.log(a);
-        console.log(a[0].name);
-      });
+    const coordinates = {latitude: 41.313822, longitude: -72.91276};
+    this.api.searchWithQuery(coordinates, null, false, 50, 9, null, 'best_match', 'pizza')
+      .then((a) => console.log(a, 't'))
+      .catch(err => console.log(err, 'a')); 
   }
 }
