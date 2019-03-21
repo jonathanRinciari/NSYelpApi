@@ -1,0 +1,46 @@
+
+<ActionBar [title]="business.name" icon="" class="action-bar">
+  <NavigationButton text="Back" android.systemIcon="ic_menu_back"></NavigationButton>
+</ActionBar>
+
+<GridLayout rows="3*, auto, 4*" columns="*, *, 16*, *, *">
+    <FlexboxLayout col="2" row="0">
+      <Image [src]="business.imageUrl" stretch="aspectFill"></Image>
+    </FlexboxLayout>
+    <FlexboxLayout col="2" row="2">
+      <GridLayout rows="*, *, *, *, *" columns="*, *" class="card">
+          <FlexboxLayout class="iconContainer" row="0" col="0">
+              <Label text="Phone" textWrap="true"></Label>
+          </FlexboxLayout>
+          <FlexboxLayout row="0" col="1">
+            <Label [text]="business.phone" textWrap="true"></Label>
+          </FlexboxLayout>
+          <FlexboxLayout class="iconContainer" row="1" col="0">
+            <Label text="Address" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout row="1" col="1">
+          <Label [text]="business.location.address" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout class="iconContainer" row="2" col="0">
+          <Label text="City" textWrap="true"></Label>
+      </FlexboxLayout>
+      <FlexboxLayout row="2" col="1">
+        <Label [text]="business.location.city" textWrap="true"></Label>
+      </FlexboxLayout>
+
+      <FlexboxLayout class="iconContainer" row="3" col="0">
+        <Label text="State" textWrap="true"></Label>
+    </FlexboxLayout>
+    <FlexboxLayout row="3" col="1">
+      <Label [text]="business.location.stateCode" textWrap="true"></Label>
+    </FlexboxLayout>
+
+    <FlexboxLayout class="iconContainer" row="4" col="0">
+      <Label text="Rating" textWrap="true"></Label>
+  </FlexboxLayout>
+  <FlexboxLayout row="4" col="1">
+    <Label [text]="business.rating" textWrap="true"></Label>
+  </FlexboxLayout>
+      </GridLayout>
+    </FlexboxLayout>
+</GridLayout>

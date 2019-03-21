@@ -1,0 +1,35 @@
+
+<ActionBar [title]="review.user" icon="" class="action-bar">
+  <NavigationButton text="Back" android.systemIcon="ic_menu_back"></NavigationButton>
+</ActionBar>
+
+<GridLayout rows="5*, auto, 3*" columns="*, *, 16*, *, *">
+    <FlexboxLayout col="2" row="0">
+      <GridLayout rows="*, *, *, *, 3*" columns="*, *" class="card">
+        <FlexboxLayout class="iconContainer" row="0" col="0">
+            <Label text="Rating" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout row="0" col="1">
+          <Label [text]="review.rating" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout class="iconContainer" row="1" col="0">
+            <Label text="Creation Date" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout row="1" col="1">
+          <Label [text]="review.timeCreate | date:'shortDate'" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout class="iconContainer" row="2" col="0">
+            <Label text="Rating" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout row="2" col="1">
+          <Label [text]="review.rating" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout class="iconContainer" row="3" col="0">
+            <Label text="Message:" textWrap="true"></Label>
+        </FlexboxLayout>
+        <FlexboxLayout row="4" col="0" colSpan="2" >
+          <Label [text]="review.message" textWrap="true"></Label>
+        </FlexboxLayout>
+      </GridLayout>
+    </FlexboxLayout>
+</GridLayout>

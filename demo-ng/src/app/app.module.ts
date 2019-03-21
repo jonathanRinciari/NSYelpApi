@@ -3,8 +3,9 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { ItemsComponent } from "./item/items.component";
-import { ItemDetailComponent } from "./item/item-detail.component";
+import { MainComponent } from './pages/main/main.component';
+import { BusinessComponent } from './pages/business/business.component';
+import { ReviewsComponent } from '~/app/pages/reviews/reviews.component';
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from "nativescript-angular/forms";
@@ -21,9 +22,10 @@ import { ItemDetailComponent } from "./item/item-detail.component";
         AppRoutingModule
     ],
     declarations: [
+        ReviewsComponent,
         AppComponent,
-        ItemsComponent,
-        ItemDetailComponent
+        MainComponent,
+        BusinessComponent
     ],
     providers: [],
     schemas: [

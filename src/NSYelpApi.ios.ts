@@ -134,13 +134,11 @@ export class NSYelpApi extends Common {
 
   public searchWithQuery(location: string | {latitude: number, longitude: number}, category?: string[], deals?: boolean, limit?: number, offset?: number, radius?: number, sort?: "best_match" | "rating" | "review_count" | "distance", searchTerm?: string): Promise<Business[] | []> {
     return new Promise((resolve, reject) => {
-      let query: YLPQuery = this.formatSearchQuery(location, category, deals, limit, offset, radius, this.sortMap[sort], searchTerm);
+      let query: YLPQuery = this.formatSearchQuery(location, category, deals, limit, offset, radius, sort, searchTerm);
       this._client.searchWithQueryCompletionHandler(query, (search: YLPSearch, err: NSError) => {
         if (err) reject(err);
-        console.log(err);
         if (search.total > 0) {
           const businessesInQuery = iosUtils.collections.nsArrayToJSArray(search.businesses);
-          console.log(businessesInQuery);
           const parsedBusinesses = businessesInQuery.map((business: any) => this.parseBusiness(business));
           resolve(parsedBusinesses);
         } else {

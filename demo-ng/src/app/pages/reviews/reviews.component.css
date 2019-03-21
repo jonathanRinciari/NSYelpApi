@@ -1,0 +1,40 @@
+/* Add mobile styles for the component here.  */
+Label {
+
+}
+
+.header {
+  background: red;
+  font-size: 18px;
+  text-align: center;
+}
+
+
+StackLayout {
+  width: 100%;
+  background: blue;
+}
+
+Image {
+  width: 98%;
+  height: 98%;
+}
+
+
+FlexboxLayout {
+  margin-top: 5;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconContainer {
+
+}
+
+
+.card {
+  border-width: 1;
+  border-color: rgba(179, 178, 178, 0.715);
+  border-radius: 15%;
+  margin: 5;
+}

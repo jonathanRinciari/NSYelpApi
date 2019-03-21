@@ -1,7 +1,12 @@
+/// <reference path="./node_modules/tns-platform-declarations/ios.d.ts" />
+/// <reference path="./node_modules/tns-platform-declarations/android.d.ts" />
+/// <reference path="./typings/java!YelpApi.d.ts" />
+/// <reference path="./typings/NSYelpApi.d.ts" />
+/// <reference path="./typings/objc!YelpAPI.d.ts" />
+
 import { Observable } from 'tns-core-modules/data/observable';
 import { ios as iosUtils } from "tns-core-modules/utils/utils";
 import { ParsedYLPCategories, Reviews, Review, Business, Categories, Location, Coordinate } from './typings/NSYelpApi';
-
 
 export interface YLPReviewParsed {
   message: string;
@@ -10,6 +15,14 @@ export interface YLPReviewParsed {
   user: YLPUser;
 }
 export class Common extends Observable {
+
+  sortMap = {
+    'best_match': 0,
+    'distance': 1,
+    'rating': 2,
+    'review_count': 3
+  };
+
   public parseBusiness (business: YLPBusiness): Business {
     return {
       id: business.identifier,
@@ -72,7 +85,7 @@ export class Common extends Observable {
     };
   }
 
-  public formatSearchQuery(location: string | {latitude: number, longitude: number}, category?: string[], deals?: boolean, limit?: number, offset?: number, radius?: number, sort?: YLPSortType, searchTerm?: string): YLPQuery {
+  public formatSearchQuery(location: string | {latitude: number, longitude: number}, category?: string[], deals?: boolean, limit?: number, offset?: number, radius?: number, sort?:  "best_match" | "rating" | "review_count" | "distance", searchTerm?: string): YLPQuery {
     let query: YLPQuery;
     if (location.hasOwnProperty('latitude')) {
       const coordinates = location as {latitude: number, longitude: number};
@@ -99,7 +112,7 @@ export class Common extends Observable {
         query['radiusFilter'] = radius;
       }
       if (sort) {
-        query['sort'] = sort;
+        query['sort'] = this.sortMap[sort];
 
       }
       if (searchTerm) {
