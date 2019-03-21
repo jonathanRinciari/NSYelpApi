@@ -1,7 +1,7 @@
 {
-    "name": "NSYelpApi",
-    "version": "1.0.0",
-    "description": "Your awesome NativeScript plugin.",
+    "name": "nsyelpapi",
+    "version": "1.0.1",
+    "description": "Nativescript implementation of the native v2 yelp api",
     "main": "NSYelpApi",
     "typings": "index.d.ts",
     "nativescript": {
@@ -33,7 +33,13 @@
         "NativeScript",
         "JavaScript",
         "Android",
-        "iOS"
+        "iOS",
+        "Yelp",
+        "Location",
+        "client",
+        "api",
+        "REST",
+        "fusion"
     ],
     "author": {
         "name": "Your Name",
