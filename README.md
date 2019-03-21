@@ -36,8 +36,14 @@ tns plugin add NSYelpApi
     this.api.searchWithQuery(coordinates, null, false, 50, 9, null, 'best_match', 'pizza')
         .then((a) => console.log(a, 't'))
         .catch(err => console.log(err, 'a'));
-  }
+    }
 }
+```
+
+#### Getting A Business With an Id
+
+```javascript
+    
 ```
 
 ## License
