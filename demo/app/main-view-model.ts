@@ -11,10 +11,6 @@ export class HelloWorldModel extends Observable {
     super();
 
     this.api = new NSYelpApi(YOUR_API_KEY);
-    // this.api.businessSearchWithId('9MzzaGTQdvkhGKvUsLD2kw')
-    //   .then((t) => console.log(t))
-    //   .catch(err => console.error(err));
-
     const coordinates = {latitude: 41.313822, longitude: -72.91276};
     this.api.searchWithQuery(coordinates, null, false, 50, 9, null, 'best_match', 'pizza')
       .then((a) => console.log(a, 't'))
