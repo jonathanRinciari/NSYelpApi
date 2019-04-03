@@ -12,6 +12,7 @@ export class NSYelpApi extends Common {
     );
   }
 
+
   public businessSearchWithId(id: string): Promise<Business> {
     return new Promise((resolve, reject) => {
       try {
