@@ -17,7 +17,7 @@ export class BusinessComponent implements OnInit {
           this.business = JSON.parse(params.business);
         }
       });
-   }
+    }
 
   ngOnInit() {
   }
