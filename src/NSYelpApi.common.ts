@@ -47,7 +47,7 @@ export class Common extends Observable {
   public parseYLPCategories(category: YLPCategory): Categories {
     return {
       alias: category.alias,
-      name: category.name
+      name: category.name,
     };
   }
 
